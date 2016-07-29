@@ -1,0 +1,7 @@
+(ns esd-viz.prod
+  (:require [esd-viz.core :as core]))
+
+;;ignore println statements in prod
+(set! *print-fn* (fn [& _]))
+
+(core/init!)
