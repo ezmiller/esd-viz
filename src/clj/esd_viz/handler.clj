@@ -17,6 +17,7 @@
    [:meta {:charset "utf-8"}]
    [:meta {:name "viewport"
            :content "width=device-width, initial-scale=1"}]
+   (include-css "https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.4/nv.d3.css")
    (include-css (if (env :dev) "/css/site.css" "/css/site.min.css"))])
 
 (def loading-page
@@ -24,6 +25,8 @@
     (head)
     [:body {:class "body-container"}
      mount-target
+     (include-js "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.js")
+     (include-js "https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.4/nv.d3.js")
      (include-js "/js/app.js")]))
 
 
