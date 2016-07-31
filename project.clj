@@ -5,7 +5,9 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :dependencies [[org.clojure/clojure "1.8.0"]
+                 [org.clojure/data.csv "0.1.3"]
                  [ring-server "0.4.0"]
+                 [ring/ring-json "0.3.1"]
                  [reagent "0.6.0-rc"]
                  [reagent-forms "0.5.24"]
                  [reagent-utils "0.1.9"]
