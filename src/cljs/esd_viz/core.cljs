@@ -5,9 +5,6 @@
               [accountant.core :as accountant]))
 
 ;; -------------------------
-;; Data Helpers
-
-;; -------------------------
 ;; Components
 
 (defn esdviz-component-did-mount []
