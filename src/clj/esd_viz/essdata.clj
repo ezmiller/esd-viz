@@ -55,7 +55,7 @@
 
 (defn clean-row
   [d]
-  (filter (fn [x] (= true (not-any? #(= x %) '("" 6 7 8 9)))) d))
+  (filter (fn [x] (= true (not-any? #(= x %) '("" 7 8 9)))) d))
 
 (defn get-col-avg
   [col-key]
