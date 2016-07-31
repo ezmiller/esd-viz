@@ -47,6 +47,12 @@
   [col-key]
   (mapv #(get-cell-val % col-key) (range (count data))))
 
+(defn get-col-as-vec-by-ctry
+  [col-key ctry]
+  (def filtered
+    (filterv #(= ctry (nth % 0)) data))
+  (mapv #(get-cell-val % col-key) (range (count filtered))))
+
 (defn clean-row
   [d]
   (filter (fn [x] (= true (not-any? #(= x %) '("" 6 7 8 9)))) d))
@@ -57,6 +63,10 @@
   (def row (mapv #(Integer/parseInt %) (clean-row (get-col-as-vec :ipudrst))))
   (float (/ (reduce + row) (count row))))
 
+(defn get-col-avg-by-ctry
+  [col-key ctry]
+  (def row (mapv #(Integer/parseInt %) (clean-row (get-col-as-vec-by-ctry col-key ctry))))
+  (float (/ (reduce + row) (count row))))
 
 (defn get-json-data []
   (if (= (count data) 0)
