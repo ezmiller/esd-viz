@@ -69,9 +69,8 @@
   (float (/ (reduce + row) (count row))))
 
 (defn get-json-data []
-  (if (= (count data) 0)
-    (def data (import-csv "data/output5788607573688187329/ESS1-6e01_1_F1.csv")))
-    {:data (reduce + )})
-
-(defn getit []
-  (import-csv "data/output5788607573688187329/ESS1-6e01_1_F1.csv"))
+  (load-data)
+  (def ctry-list '("AT" "GB" "ES" "DE" "IL" "FR"))
+  (into (sorted-map) (mapv #(hash-map
+                              (keyword %)
+                              (get-col-avg-by-ctry :ipudrst %)) ctry-list)))

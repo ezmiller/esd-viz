@@ -3,6 +3,7 @@
             [compojure.route :refer [not-found resources]]
             [hiccup.page :refer [include-js include-css html5]]
             [esd-viz.middleware :refer [wrap-middleware]]
+            [esd-viz.essdata :as essdata]
             [config.core :refer [env]]))
 
 (def mount-target
@@ -29,10 +30,14 @@
      (include-js "https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.4/nv.d3.js")
      (include-js "/js/app.js")]))
 
+(def load-data
+  {:status 200
+   :body (essdata/get-json-data)})
 
 (defroutes routes
   (GET "/" [] loading-page)
   (GET "/about" [] loading-page)
+  (GET "/data" [] load-data)
   
   (resources "/")
   (not-found "Not Found"))
