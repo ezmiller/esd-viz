@@ -49,7 +49,8 @@
 ;; Views
 
 (defn home-page []
-  [:div [:h3 "The Desire to Undersand Others"]
+  [:div [:h3 {:style {:margin-bottom 0}} "The Desire to Undersand Others in Europe"]
+        [:h4 {:style {:margin 0}} "(By Year & By Country)"]
    [esdviz]])
 
 (defn current-page []
