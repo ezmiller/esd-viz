@@ -40,7 +40,9 @@
 
 (defn load-data []
   (if (data-not-loaded)
-    (def data (import-csv "data/output5788607573688187329/ESS1-6e01_1_F1.csv"))))
+    ; (def data (import-csv "data/output5788607573688187329/ESS1-6e01_1_F1.csv"))
+    (def data (import-csv "data/output3248285030537870775/ESS1-6e01_1_F1.csv"))
+    ))
 
 (defn get-col-names
   "Creates a map between column names and the column number."
