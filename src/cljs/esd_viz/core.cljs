@@ -43,15 +43,22 @@
     {:component-did-mount esdviz-component-did-mount
      :reagent-render
      (fn []
-       [:div#esd-viz {:style {:width 750 :height 820}} [:svg]])}))
+       [:div#esd-viz {:style {:width 750 :height 420}} [:svg]])}))
 
 ;; -------------------------
 ;; Views
 
+(defn citation []
+  [:p {:style {:font-size "10px" :line-height 1.2}}
+      "Citation: European Social Survey Rounds 1-6. Data file edition 6.4.
+       NSD - Norwegian Centre for Research Data, Norway - Data Archive and
+       distributor of ESS data for ESS ERIC."])
+
 (defn home-page []
   [:div [:h3 {:style {:margin-bottom 0}} "The Desire to Undersand Others in Europe"]
         [:h4 {:style {:margin 0}} "(By Year & By Country)"]
-   [esdviz]])
+   [esdviz]
+   [citation]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
