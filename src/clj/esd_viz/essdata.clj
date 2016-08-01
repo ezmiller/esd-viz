@@ -19,6 +19,15 @@
    "pweight"
    "ipudrst"])
 
+(def yr-to-rnd
+  {:2014 7
+   :2012 6
+   :2010 5
+   :2008 4
+   :2006 3
+   :2004 2
+   :2002 1})
+
 (defn import-csv
   "Opens the specified file and reads the data."
   [fname]
@@ -30,47 +39,58 @@
   (= (count data) 0))
 
 (defn load-data []
-  (def data (import-csv "data/output5788607573688187329/ESS1-6e01_1_F1.csv")))
+  (if (data-not-loaded)
+    (def data (import-csv "data/output5788607573688187329/ESS1-6e01_1_F1.csv"))))
 
 (defn get-col-names
   "Creates a map between column names and the column number."
   []
   (zipmap (map (fn [v] (keyword v)) col-headers) (range)))
 
-(defn get-cell-val
-  "Gets the value in the specified cell."
-  [row col-key]
-  (def cols (get-col-names))
-  (nth (nth data row) (get cols col-key)))
-
-(defn get-col-as-vec
-  [col-key]
-  (mapv #(get-cell-val % col-key) (range (count data))))
-
-(defn get-col-as-vec-by-ctry
-  [col-key ctry]
-  (def filtered
-    (filterv #(= ctry (nth % 0)) data))
-  (mapv #(get-cell-val % col-key) (range (count filtered))))
-
-(defn clean-row
+(defn clean
   [d]
   (filter (fn [x] (= true (not-any? #(= x %) '("" 7 8 9)))) d))
 
-(defn get-col-avg
-  [col-key]
-  (def cols (get-col-names))
-  (def row (mapv #(Integer/parseInt %) (clean-row (get-col-as-vec :ipudrst))))
-  (float (/ (reduce + row) (count row))))
+(defn filter-by-ctry
+  [ctry d]
+  (filterv #(= ctry (nth % 0)) d))
 
-(defn get-col-avg-by-ctry
-  [col-key ctry]
-  (def row (mapv #(Integer/parseInt %) (clean-row (get-col-as-vec-by-ctry col-key ctry))))
-  (float (/ (reduce + row) (count row))))
+(defn filter-by-yr
+  [year d]
+  (filterv #(= (get yr-to-rnd (keyword year)) (Integer/parseInt (nth % 6))) d))
+
+(defn get-cell-val
+  "Gets the value in the specified cell."
+  [row col-key d]
+  (def cols (get-col-names))
+  (nth (nth d row) (get cols col-key)))
+
+(defn get-col-as-vec
+  [col-key d]
+  (mapv #(get-cell-val % col-key d) (range (count d))))
+
+(defn get-col-avg
+  [d]
+  (def row (mapv #(Integer/parseInt %) (clean d)))
+  (if (> (count row) 0)
+    (do
+      (float (/ (reduce + row) (count row))))
+    0))
+
+(defn get-col-avg-by-ctry-by-yr
+  [col-key ctry year]
+  (get-col-avg (get-col-as-vec col-key (filter-by-ctry ctry (filter-by-yr year data)))))
+
+(defn get-yr-avgs-by-ctry
+  [col-key ctry years]
+  (mapv #(hash-map
+           :x %
+           :y (get-col-avg-by-ctry-by-yr :ipudrst ctry %)) years))
 
 (defn get-json-data []
   (load-data)
-  (def ctry-list '("AT" "GB" "ES" "DE" "IL" "FR"))
-  (into (sorted-map) (mapv #(hash-map
-                              (keyword %)
-                              (get-col-avg-by-ctry :ipudrst %)) ctry-list)))
+  (def ctrys '("AT" "GB" "ES" "DE" "IL" "FR"))
+  (def years '("2002" "2004" "2006" "2008" "2010" "2012" "2014"))
+  (mapv (fn [ctry]
+          {:key ctry
+           :values (get-yr-avgs-by-ctry :ipudrst ctry years)}) ctrys))
