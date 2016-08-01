@@ -35,8 +35,12 @@
             (datum my-data)
             (call my-chart))))))
 
+(defn error-handler [{:keys [status status-text]}]
+  (.log js/console (str "something bad happened: " status " " status-text)))
+
 (defn esdviz-component-did-mount []
   (GET "/data" {:handler handler
+                :error-handler error-handler
                 :format {:content-type "application/json"}}))
 
 (defn esdviz []
