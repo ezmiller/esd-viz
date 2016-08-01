@@ -86,7 +86,7 @@
 (defn get-yr-avgs-by-ctry
   [col-key ctry years]
   (mapv #(hash-map
-           :x %
+           :x (Integer/parseInt %)
            :y (get-col-avg-by-ctry-by-yr :ipudrst ctry %)) years))
 
 (defn get-json-data []
