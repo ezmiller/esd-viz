@@ -36,7 +36,8 @@
             (call my-chart))))))
 
 (defn esdviz-component-did-mount []
-  (GET "/data" {:handler handler}))
+  (GET "/data" {:handler handler
+                :format {:content-type "application/json"}}))
 
 (defn esdviz []
   (reagent/create-class
