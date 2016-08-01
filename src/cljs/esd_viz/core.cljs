@@ -2,38 +2,54 @@
     (:require [reagent.core :as reagent :refer [atom]]
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
-              [accountant.core :as accountant]))
+              [accountant.core :as accountant]
+              [ajax.core :refer [GET POST]]))
 
 ;; -------------------------
 ;; Components
 
-(defn esdviz-component-did-mount []
+(defn handler [response]
   (.addGraph js/nv
     (fn []
-      (let [my-chart (.. js/nv -models discreteBarChart
+      (def thedata (.parse js/JSON response))
+      (.log js/console thedata)
+      (let [my-chart (.. js/nv -models lineChart
+                         (width 750)
+                         (height 420)
+                         (yDomain (clj->js [1.5 4]))
+                         (xDomain (clj->js [2002 2012]))
+                         ; (useInteractiveGuideline true)
+                         (pointShape "circle")
+                         (pointSize 0.5)
                          (noData "Where is the data?")
-                         (showValues true)
                          (duration 350))
-            my-data [{:x "Label A" :y 29}
-                     {:x "Label B" :y 4}
-                     {:x "Label C" :y 10}
-                     {:x "Label D" :y 18}]]
+            my-data thedata]
+
+        (.. my-chart -xAxis
+            (axisLabel "Year"));
+        
+        (.. my-chart -yAxis
+            (axisLabel "Importance of Understanding Others"))
+
         (.. js/d3 (select "#esd-viz svg")
-            (datum (clj->js [{:values my-data}]))
+            (datum my-data)
             (call my-chart))))))
+
+(defn esdviz-component-did-mount []
+  (GET "/data" {:handler handler}))
 
 (defn esdviz []
   (reagent/create-class
     {:component-did-mount esdviz-component-did-mount
      :reagent-render
      (fn []
-       [:div#esd-viz {:style {:width 750 :heigth 420}} [:svg]])}))
+       [:div#esd-viz {:style {:width 750 :height 820}} [:svg]])}))
 
 ;; -------------------------
 ;; Views
 
 (defn home-page []
-  [:div [:h2 "European Social Data Visualization"]
+  [:div [:h3 "The Desire to Undersand Others"]
    [esdviz]])
 
 (defn current-page []
