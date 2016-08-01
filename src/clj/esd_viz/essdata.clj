@@ -77,7 +77,7 @@
   (if (> (count row) 0)
     (do
       (float (/ (reduce + row) (count row))))
-    0))
+    nil))
 
 (defn get-col-avg-by-ctry-by-yr
   [col-key ctry year]
