@@ -27,7 +27,7 @@
 
         (.. my-chart -xAxis
             (axisLabel "Year"));
-        
+
         (.. my-chart -yAxis
             (axisLabel "Importance of Understanding Others"))
 
