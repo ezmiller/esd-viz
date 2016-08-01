@@ -91,8 +91,8 @@
 
 (defn get-json-data []
   (load-data)
-  (def ctrys '("AT" "GB" "ES" "DE" "IL" "FR"))
-  (def years '("2002" "2004" "2006" "2008" "2010" "2012" "2014"))
+  (def ctrys '("GB" "ES" "DE" "FR" "HU" "FI" "PT" "SE"))
+  (def years '("2002" "2004" "2006" "2008" "2010" "2012"))
   (mapv (fn [ctry]
           {:key ctry
            :values (get-yr-avgs-by-ctry :ipudrst ctry years)}) ctrys))
