@@ -40,7 +40,7 @@
 
 (defn esdviz-component-did-mount []
   (GET "/data" {:handler handler
-                :error-handler error-handler))
+                :error-handler error-handler}))
 
 (defn esdviz []
   (reagent/create-class
