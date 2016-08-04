@@ -91,7 +91,7 @@
 
 (defn get-json-data []
   (load-data)
-  (def ctrys '("GB"))
+  (def ctrys '("GB" "ES" "DE" "FR" "HU" "FI" "PT" "SE"))
   (def years '("2002" "2004" "2006" "2008" "2010" "2012"))
   (mapv (fn [ctry]
           {:key ctry
