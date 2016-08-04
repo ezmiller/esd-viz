@@ -55,7 +55,7 @@
              :compiler
              {:output-to "target/cljsbuild/public/js/app.js"
               :output-dir "target/uberjar"
-              :optimizations :advanced
+              :optimizations :whitespace
               :pretty-print  false}}
             :app
             {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
